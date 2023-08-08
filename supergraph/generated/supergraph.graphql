@@ -1,0 +1,471 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.2", for: EXECUTION)
+{
+  query: Query
+  mutation: Mutation
+}
+
+directive @join__field(graph: join__Graph!, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+input AddProductInput
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  id: String!
+  name: String
+}
+
+type AddProductPayload
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  product(filter: ProductFilter, order: ProductOrder, first: Int, offset: Int): [Product]
+  numUids: Int
+}
+
+input AuthRule
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  and: [AuthRule]
+  or: [AuthRule]
+  not: AuthRule
+  rule: String
+}
+
+input ContainsFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  point: PointRef
+  polygon: PolygonRef
+}
+
+input CustomHTTP
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  url: String!
+  method: HTTPMethod!
+  body: String
+  graphql: String
+  mode: Mode
+  forwardHeaders: [String!]
+  secretHeaders: [String!]
+  introspectionHeaders: [String!]
+  skipIntrospection: Boolean
+}
+
+"""
+The DateTime scalar type represents date and time as a string in RFC3339 format.
+For example: "1985-04-12T23:20:50.52Z" represents 20 minutes and 50.52 seconds after the 23rd hour of April 12th, 1985 in UTC.
+"""
+scalar DateTime
+  @join__type(graph: GRAPH_2_DGRAPH)
+
+input DateTimeFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  eq: DateTime
+  in: [DateTime]
+  le: DateTime
+  lt: DateTime
+  ge: DateTime
+  gt: DateTime
+  between: DateTimeRange
+}
+
+input DateTimeRange
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  min: DateTime!
+  max: DateTime!
+}
+
+type DeleteProductPayload
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  product(filter: ProductFilter, order: ProductOrder, first: Int, offset: Int): [Product]
+  msg: String
+  numUids: Int
+}
+
+enum DgraphIndex
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  int
+  int64
+  float
+  bool
+  hash
+  exact
+  term
+  fulltext
+  trigram
+  regexp
+  year
+  month
+  day
+  hour
+  geo
+}
+
+input FloatFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  eq: Float
+  in: [Float]
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: FloatRange
+}
+
+input FloatRange
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  min: Float!
+  max: Float!
+}
+
+input GenerateMutationParams
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  add: Boolean
+  update: Boolean
+  delete: Boolean
+}
+
+input GenerateQueryParams
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  get: Boolean
+  query: Boolean
+  password: Boolean
+  aggregate: Boolean
+}
+
+enum HTTPMethod
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  GET
+  POST
+  PUT
+  PATCH
+  DELETE
+}
+
+"""
+The Int64 scalar type represents a signed 64‐bit numeric non‐fractional value.
+Int64 can represent values in range [-(2^63),(2^63 - 1)].
+"""
+scalar Int64
+  @join__type(graph: GRAPH_2_DGRAPH)
+
+input Int64Filter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  eq: Int64
+  in: [Int64]
+  le: Int64
+  lt: Int64
+  ge: Int64
+  gt: Int64
+  between: Int64Range
+}
+
+input Int64Range
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  min: Int64!
+  max: Int64!
+}
+
+input IntersectsFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  polygon: PolygonRef
+  multiPolygon: MultiPolygonRef
+}
+
+input IntFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  eq: Int
+  in: [Int]
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: IntRange
+}
+
+input IntRange
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  min: Int!
+  max: Int!
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  GRAPH_1_NODEJS @join__graph(name: "graph-1-nodejs", url: "http://dummy/")
+  GRAPH_2_DGRAPH @join__graph(name: "graph-2-dgraph", url: "http://dummy/")
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+enum Mode
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  BATCH
+  SINGLE
+}
+
+type MultiPolygon
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  polygons: [Polygon!]!
+}
+
+input MultiPolygonRef
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  polygons: [PolygonRef!]!
+}
+
+type Mutation
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  addProduct(input: [AddProductInput!]!, upsert: Boolean): AddProductPayload
+  updateProduct(input: UpdateProductInput!): UpdateProductPayload
+  deleteProduct(filter: ProductFilter!): DeleteProductPayload
+}
+
+input NearFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  distance: Float!
+  coordinate: PointRef!
+}
+
+type Order
+  @join__type(graph: GRAPH_1_NODEJS, key: "id")
+{
+  id: ID!
+  description: String
+  product: Product
+}
+
+type Point
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  longitude: Float!
+  latitude: Float!
+}
+
+input PointGeoFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  near: NearFilter
+  within: WithinFilter
+}
+
+type PointList
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  points: [Point!]!
+}
+
+input PointListRef
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  points: [PointRef!]!
+}
+
+input PointRef
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  longitude: Float!
+  latitude: Float!
+}
+
+type Polygon
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  coordinates: [PointList!]!
+}
+
+input PolygonGeoFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  near: NearFilter
+  within: WithinFilter
+  contains: ContainsFilter
+  intersects: IntersectsFilter
+}
+
+input PolygonRef
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  coordinates: [PointListRef!]!
+}
+
+type Product
+  @join__type(graph: GRAPH_1_NODEJS, key: "id", resolvable: false)
+  @join__type(graph: GRAPH_2_DGRAPH, key: "id")
+{
+  id: String!
+  name: String @join__field(graph: GRAPH_2_DGRAPH)
+}
+
+type ProductAggregateResult
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  count: Int
+  idMin: String
+  idMax: String
+  nameMin: String
+  nameMax: String
+}
+
+input ProductFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  id: StringHashFilter
+  has: [ProductHasFilter]
+  and: [ProductFilter]
+  or: [ProductFilter]
+  not: ProductFilter
+}
+
+enum ProductHasFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  id
+  name
+}
+
+input ProductOrder
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  asc: ProductOrderable
+  desc: ProductOrderable
+  then: ProductOrder
+}
+
+enum ProductOrderable
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  id
+  name
+}
+
+input ProductPatch
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  name: String
+}
+
+input ProductRef
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  id: String
+  name: String
+}
+
+type Query
+  @join__type(graph: GRAPH_1_NODEJS)
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  orders: [Order!]! @join__field(graph: GRAPH_1_NODEJS)
+  orderById(id: ID!): Order @join__field(graph: GRAPH_1_NODEJS)
+  getProduct(id: String!): Product @join__field(graph: GRAPH_2_DGRAPH)
+  queryProduct(filter: ProductFilter, order: ProductOrder, first: Int, offset: Int): [Product] @join__field(graph: GRAPH_2_DGRAPH)
+  aggregateProduct(filter: ProductFilter): ProductAggregateResult @join__field(graph: GRAPH_2_DGRAPH)
+}
+
+input StringExactFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  eq: String
+  in: [String]
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: StringRange
+}
+
+input StringFullTextFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  alloftext: String
+  anyoftext: String
+}
+
+input StringHashFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  eq: String
+  in: [String]
+}
+
+input StringRange
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  min: String!
+  max: String!
+}
+
+input StringRegExpFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  regexp: String
+}
+
+input StringTermFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  allofterms: String
+  anyofterms: String
+}
+
+input UpdateProductInput
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  filter: ProductFilter!
+  set: ProductPatch
+  remove: ProductPatch
+}
+
+type UpdateProductPayload
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  product(filter: ProductFilter, order: ProductOrder, first: Int, offset: Int): [Product]
+  numUids: Int
+}
+
+input WithinFilter
+  @join__type(graph: GRAPH_2_DGRAPH)
+{
+  polygon: PolygonRef!
+}

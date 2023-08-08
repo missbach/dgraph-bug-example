@@ -1,0 +1,4 @@
+type Product @key(fields: "id") {
+    id: String! @id
+    name: String
+}

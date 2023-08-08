@@ -1,0 +1,17 @@
+type Query {
+    orders: [Order!]!
+    orderById(id: ID!): Order
+}
+
+type Product @key(fields: "id", resolvable: false) {
+    id: String!
+}
+
+type Order @key(fields: "id") {
+    id: ID!
+    description: String
+    product: Product
+}
+
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.0",
+    import: ["@key", "@shareable"])

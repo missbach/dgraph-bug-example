@@ -1,0 +1,4 @@
+[
+    { "id": "o1", "description": "Order 1", "product": { "id": "p1" } },
+    { "id": "o2", "description": "Order 2", "product": { "id": "p2" } }
+]

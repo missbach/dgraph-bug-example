@@ -1,0 +1,12 @@
+supergraph:
+  listen: 127.0.0.1:4000
+override_subgraph_url:
+  graph-1-nodejs: http://127.0.0.1:4001/
+  graph-2-dgraph: http://127.0.0.1:4002/
+# headers:
+#   subgraphs:
+#     graph-2-dgraph:
+#       request:
+#         - insert:
+#             name: "X-Auth-Token"
+#             value: "..."
