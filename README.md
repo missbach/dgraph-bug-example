@@ -1,12 +1,14 @@
 # Read me
 
 First set up everything by following the README.txt files in all subfolders.
+
 Then come back here and try the following examples.
 
 # My use case - broken :(
 
 Run this query against the supergraph:
 
+```graphql
 query {
   orders {
     id
@@ -17,9 +19,11 @@ query {
     }
   }
 }
+```
 
 You should receive the following, incorrect result:
 
+```json
 {
   "data": {
     "orders": [
@@ -42,12 +46,14 @@ You should receive the following, incorrect result:
     ]
   }
 }
+```
 
 Note how it matched `name: "Product 2"` to `id: "p1"`, completely messing up the
 results.
 
 That's how it should actually look like:
 
+```json
 {
   "data": {
     "orders": [
@@ -70,12 +76,14 @@ That's how it should actually look like:
     ]
   }
 }
+```
 
 
 # Example of a working entities query
 
 Run this query against graph-1-nodejs:
 
+```graphql
 query {
   _entities(representations: [
     { __typename: "Order", id: "o2" },
@@ -87,9 +95,11 @@ query {
     }
   }
 }
+```
 
 It should respond with:
 
+```json
 {
   "data": {
     "_entities": [
@@ -103,11 +113,13 @@ It should respond with:
     ]
   }
 }
+```
 
 # Example of a broken entities query
 
 Run this query against graph-2-dgraph:
 
+```graphql
 query {
   _entities(representations: [
     { __typename: "Product", id: "p3" },
@@ -119,9 +131,11 @@ query {
     }
   }
 }
+```
 
 And it responds with:
 
+```json
 {
   "data": {
     "_entities": [
@@ -135,9 +149,11 @@ And it responds with:
   },
   "extensions": { ... }
 }
+```
 
 Whereas it actually should respond with:
 
+```json
 {
   "data": {
     "_entities": [
@@ -152,5 +168,6 @@ Whereas it actually should respond with:
   },
   "extensions": { ... }
 }
+```
 
-Note the missing null element and the wrong order of the result.
+Note the missing `null` element and the wrong order of the result.
